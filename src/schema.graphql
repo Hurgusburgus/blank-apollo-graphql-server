@@ -1,0 +1,20 @@
+type GameState {
+  player1: Player!
+  player2: Player!
+  turnCount: Int!
+  currentTurn: String!
+}
+
+type Player {
+  id: String!
+  state: PlayerState!
+}
+
+type PlayerState {
+  left: Int!
+  right: Int!
+}
+
+type Query {
+  getGameState: GameState!
+}
