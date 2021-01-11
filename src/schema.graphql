@@ -1,3 +1,21 @@
+type User {
+  id: String!
+  username: String!
+  email: String!
+}
+
+type Participant {
+  playerNum: String!
+  User: User!
+}
+
+type Table {
+  id: String!
+  gameId: String!
+  host: User!
+  participants: [User]
+}
+
 type GameState {
   player1: Player!
   player2: Player!
@@ -7,14 +25,23 @@ type GameState {
 
 type Player {
   id: String!
-  state: PlayerState!
-}
-
-type PlayerState {
   left: Int!
   right: Int!
 }
 
 type Query {
   getGameState: GameState!
+  getTables: [Table]!
+}
+
+enum Side {
+  LEFT
+  RIGHT
+}
+
+type Mutation {
+  createUser(email: String!, username: String!, password: String!): User
+  createTable: Table
+  joinTable(tableId: String!): Table
+  attack(attackingSide: Side, receivingSide: Side): GameState
 }

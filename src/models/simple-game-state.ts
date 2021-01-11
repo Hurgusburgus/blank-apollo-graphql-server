@@ -1,26 +1,18 @@
-
 export interface GameState {
-    player1: Player;
-    player2: Player;
-    turnCount: number;
-    currentTurn: string; 
+  player1: Player;
+  player2: Player;
+  turnCount: number;
+  currentTurn: string;
 }
 
-interface Player {
-    id: string;
-    state: PlayerState;
-
-
+export interface Player {
+  id: string;
+  left: number;
+  right: number;
 }
-
 
 interface User {
-    id: string;
-    username: string;
-    nickname: string;
-}
-
-interface PlayerState {
-    left: number;
-    right: number;
+  id: string;
+  username: string;
+  nickname: string;
 }

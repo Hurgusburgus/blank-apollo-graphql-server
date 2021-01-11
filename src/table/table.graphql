@@ -1,0 +1,16 @@
+type Table {
+  id: ID
+  createdBy: ID
+  createdOn: String
+  invitees: [String]
+  participants: [String]
+}
+
+type Query {
+  getTables: [Table]
+}
+
+type Mutation {
+  createTable: Table
+  joinTable(tableId: ID): Table
+}
