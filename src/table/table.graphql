@@ -1,16 +1,17 @@
 type Table {
   id: ID
-  createdBy: ID
+  createdBy: User
   createdOn: String
+  maxPlayers: Int
   invitees: [String]
-  participants: [String]
+  participants: [User]
 }
 
-type Query {
-  getTables: [Table]
+extend type Query {
+  tables: [Table]
 }
 
-type Mutation {
+extend type Mutation {
   createTable: Table
-  joinTable(tableId: ID): Table
+  joinTable(tableId: ID!): Table
 }

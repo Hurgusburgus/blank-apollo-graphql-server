@@ -7,6 +7,7 @@ import config from '../config';
 
 const UserResolverMap: IResolvers = {
   Query: {
+    user: (parent, {id}, context) => UserProvider.getUserById(id),
     currentUser: (parent, args, context) => context.getUser(),
   },
   Mutation: {

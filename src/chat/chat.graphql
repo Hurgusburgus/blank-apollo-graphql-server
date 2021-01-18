@@ -1,0 +1,26 @@
+type Chat {
+  id: ID
+  tableId: ID
+  participants: [User]
+  comments: [Comment]
+}
+
+type Comment {
+  id: ID
+  timestamp: String
+  author: User
+  content: String
+}
+
+extend type Query {
+  chat(id: ID, tableId: ID): Chat
+}
+
+extend type Mutation {
+  createChat(tableId: ID!): Chat
+  postComment(chatId: ID!, author: ID!, content: String!): Comment
+}
+
+extend type Subscription {
+  commentPosted(chatId: ID!): Comment
+}

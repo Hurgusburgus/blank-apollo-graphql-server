@@ -10,9 +10,3 @@ export interface Player {
   left: number;
   right: number;
 }
-
-interface User {
-  id: string;
-  username: string;
-  nickname: string;
-}

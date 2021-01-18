@@ -9,11 +9,12 @@ type AuthPayload {
   token: String
 }
 
-type Query {
+extend type Query {
+  user(id: ID): User
   currentUser: User
 }
 
-type Mutation {
+extend type Mutation {
   login(username: String!, password: String!): AuthPayload
   logout: Boolean
   signup(email: String!, username: String!, password: String!): AuthPayload

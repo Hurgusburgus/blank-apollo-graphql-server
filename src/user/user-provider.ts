@@ -7,6 +7,7 @@ export interface UserModel {
   createUser: (email: string, username: string, password: string) => Promise<User>;
   getUser: (username: string, password: string) => Promise< User | undefined>;
   getUsers: () => Promise<User[]>;
+  getUserById: (id: string) => Promise<User | undefined>; 
 }
 
 const users: User[] = [
@@ -15,6 +16,18 @@ const users: User[] = [
     email: 'admin@admin.net',
     username: 'admin',
     password: hashSync('admin', 10),
+  },
+  {
+    id: '2',
+    email: 'p1@gg.com',
+    username: 'p1',
+    password: hashSync('p1', 10),
+  },
+  {
+    id: '3',
+    email: 'p2@gg.com',
+    username: 'p2',
+    password: hashSync('p2', 10),
   },
 ];
 
@@ -49,6 +62,10 @@ const getUser = async (username: string, password: string): Promise< User | unde
   );
 };
 
+const getUserById = async (id: string): Promise<User | undefined> => {
+  return users.find((user) => user.id === id);
+}
+
 const getUsers = async () => users;
 
-export default { createUser, getUser, getUsers } as UserModel;
+export default { createUser, getUser, getUsers, getUserById } as UserModel;

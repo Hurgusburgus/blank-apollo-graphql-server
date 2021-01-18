@@ -27,7 +27,10 @@ app.use(session({
 
 const server = new ApolloServer({
   schema,
-  context: async ({ req, res }) => {
+  context: async ({ req, res, connection }) => {
+    if (connection) {
+      return connection.context;
+    }
     return {
       setResponseHeader: (token: string) =>
         res.setHeader('set-cookie', token),
@@ -38,7 +41,7 @@ const server = new ApolloServer({
           throw new AuthenticationError('You must be logged in');
         }
         return user;
-      }
+      },
     };
   },
   validationRules: [depthLimit(7)],
@@ -51,6 +54,12 @@ app.use(compression());
 server.applyMiddleware({ app, path: '/graphql' });
 
 const httpServer = createServer(app);
+server.installSubscriptionHandlers(httpServer);
+
 httpServer.listen(
   { port: PORT },
-  (): void => console.log(`\n🚀      GraphQL is now running on http://localhost:${PORT}/graphql`));
+  (): void => {
+    console.log(`\n🚀      GraphQL is now running on http://localhost:${PORT}/graphql`);
+    console.log(`\n🚀      GraphQL is now running on ws://localhost:${PORT}/graphql`)
+  }
+);

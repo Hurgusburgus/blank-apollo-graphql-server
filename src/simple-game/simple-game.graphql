@@ -1,0 +1,44 @@
+type GameState {
+  id: ID
+  players: [Player]
+  turnCount: Int
+  currentPlayer: Player
+  nextPlayer: Player
+}
+
+type Player {
+  id: String
+  key: Int
+  user: User
+  left: Int
+  right: Int
+}
+
+enum Side {
+  LEFT
+  RIGHT
+}
+
+enum MoveType {
+  ATTACK
+  SPLIT
+}
+
+input Attack {
+  attackingSide: Side!
+  receivingSide: Side!
+}
+
+input MoveInput {
+  gameId: String!
+  moveType: MoveType!
+  attack: Attack
+}
+
+extend type Query {
+  gameState(gameId: ID!): GameState
+}
+
+extend type Mutation {
+  takeTurn(input: MoveInput!): GameState
+}
