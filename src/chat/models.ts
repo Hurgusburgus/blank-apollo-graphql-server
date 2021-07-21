@@ -8,6 +8,7 @@ export interface Chat {
 
 export interface Comment {
   id: string;
+  chatId: string;
   timestamp: number;
   author: string;
   content: string;

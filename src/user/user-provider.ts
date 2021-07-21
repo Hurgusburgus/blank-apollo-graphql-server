@@ -16,18 +16,21 @@ const users: User[] = [
     email: 'admin@admin.net',
     username: 'admin',
     password: hashSync('admin', 10),
+    friends: ['1', '2']
   },
   {
     id: '2',
     email: 'p1@gg.com',
     username: 'p1',
     password: hashSync('p1', 10),
+    friends: ['2'],
   },
   {
     id: '3',
     email: 'p2@gg.com',
     username: 'p2',
     password: hashSync('p2', 10),
+    friends: ['1'],
   },
 ];
 

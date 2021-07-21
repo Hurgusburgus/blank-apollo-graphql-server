@@ -2,20 +2,17 @@ type User {
   id: ID
   email: String
   username: String
-}
-
-type AuthPayload {
-  user: User
-  token: String
+  friends: [User]
 }
 
 extend type Query {
   user(id: ID): User
   currentUser: User
+  searchUsers(nameQuery: String!): [User]
 }
 
 extend type Mutation {
-  login(username: String!, password: String!): AuthPayload
+  login(username: String!, password: String!): User
   logout: Boolean
-  signup(email: String!, username: String!, password: String!): AuthPayload
+  signup(email: String!, username: String!, password: String!): User
 }

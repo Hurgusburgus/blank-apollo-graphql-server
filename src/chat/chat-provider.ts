@@ -7,7 +7,7 @@ import { User } from '../user/models';
 const chats: Chat[] = [{
   id: '1',
   tableId: '1',
-  participants: ['1'],
+  participants: ['1', '2'],
   comments: [],
 }];
 
@@ -32,13 +32,14 @@ const createChatForTable = async (tableId: string, participants: string[]): Prom
 
 const postCommentToChat = async(chatId: string, author: string, content: string): Promise<Comment> => {
   const newComment = {
+    chatId,
     author,
     content,
     timestamp: Date.now(),
   } as Comment;
   const chat = chats.find(c => c.id === chatId);
   if(chat) {
-    chat.comments.push(newComment);
+    chat.comments = [ newComment, ...chat.comments ];
     return newComment;
   }
   throw new Error(`Chat with id '${chatId}' not found.`);

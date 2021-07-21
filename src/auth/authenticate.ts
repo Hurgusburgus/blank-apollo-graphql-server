@@ -2,7 +2,7 @@ import { verify } from 'jsonwebtoken';
 import { UserModel } from '../user/user-provider';
 
 
-export default async (authorization: string, secrets: any, userModel: UserModel) => {
+export const authenticate = async (authorization: string, secrets: any, userModel: UserModel) => {
   const bearerLength = "Bearer ".length;
   if(authorization && authorization.length > bearerLength){
     const token = authorization.slice(bearerLength);
@@ -28,3 +28,23 @@ export default async (authorization: string, secrets: any, userModel: UserModel)
   }
   return null;
 }
+
+export interface GraphQLWhitelistEntry {
+  query: string;
+  endpoint: string;
+};
+
+export const isRequestWhitelisted = (request: any, whiteList: GraphQLWhitelistEntry[]) => {
+  if (request.body && request.body.query) {
+    const bits = (request.body.query as string).split('{');
+    const [first, second] = bits;
+    const [query] = first.split(' ');
+    const [endpoint] = second.trim().split('(');
+    console.log(query, endpoint);
+    if (whiteList.find(e => e.query === query && e.endpoint === endpoint)) {
+      return true;
+    } 
+  }
+  return false;
+}
+

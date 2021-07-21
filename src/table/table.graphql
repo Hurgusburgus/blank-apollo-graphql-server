@@ -1,17 +1,30 @@
 type Table {
   id: ID
+  gameInfo: GameInfo
+  access: TableAccess
   createdBy: User
   createdOn: String
+  minPlayers: Int
   maxPlayers: Int
-  invitees: [String]
+  invitees: [User]
   participants: [User]
 }
 
+enum TableAccess {
+  PUBLIC
+  FRIENDS
+  INVITE
+}
+
 extend type Query {
-  tables: [Table]
+  publicTables: [Table]
+  myTableInvites: [Table]
+  myTables: [Table]
+  table(id: ID!): Table
 }
 
 extend type Mutation {
-  createTable: Table
+  createTable(gameInfoId: ID!, access: TableAccess): Table
+  inviteToTable(tableId: ID!, userId: ID!): Table
   joinTable(tableId: ID!): Table
 }

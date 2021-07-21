@@ -1,0 +1,11 @@
+type GameInfo {
+  id: ID
+  name: String
+  minPlayers: Int
+  maxPlayers: Int
+  description: String
+}
+
+extend type Query {
+  gameInfo(gameInfoId: ID!): GameInfo
+}

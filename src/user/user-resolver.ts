@@ -8,7 +8,7 @@ import config from '../config';
 const UserResolverMap: IResolvers = {
   Query: {
     user: (parent, {id}, context) => UserProvider.getUserById(id),
-    currentUser: (parent, args, context) => context.getUser(),
+    currentUser: (parent, args, context) => context.currentUser,
   },
   Mutation: {
     login: async (parent, { username, password }, context) => {
@@ -21,9 +21,10 @@ const UserResolverMap: IResolvers = {
         if (!validPass) {
           throw new Error('Password does not match User');
         }
-        const token = sign(user, config.jwt.JWT_SECRET);
-        context.setResponseHeader(token);
-        return { user, token };
+        const tokenUser = { id: user.id, email: user.email, username: user.username }
+        const token = sign(tokenUser, config.jwt.JWT_SECRET);
+        context.setResponseCookie(token);
+        return user;
       } catch (error) {
         throw new ApolloError(error.message);
       }

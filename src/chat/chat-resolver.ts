@@ -11,6 +11,11 @@ const COMMENT_POSTED = 'COMMENT_POSTED';
 
 
 const resolverMap: IResolvers = {
+  Comment: {
+    author: async (obj: Comment, args, context, info) => {
+      return await UserProvider.getUserById(obj.author);
+    },
+  },
   Query: {
     chat: async (parents, args, context, info) => {
       if (args.id) {
@@ -26,9 +31,9 @@ const resolverMap: IResolvers = {
     createChat: async (parents, args, context, info) => {
       return ChatProvider.createChatForTable(args.tableId, args.participants);
     },
-    postComment: async (parents, { chatId, userId, content }, context, info) => {
+    postComment: async (parents, { chatId, author, content }, context, info) => {
       // const user = await context.getCurrentUser();
-      const commentPosted = await ChatProvider.postCommentToChat(chatId, userId, content);
+      const commentPosted = await ChatProvider.postCommentToChat(chatId, author, content);
       pubSub.publish(COMMENT_POSTED, { commentPosted })
       return commentPosted;
     },
@@ -37,7 +42,10 @@ const resolverMap: IResolvers = {
     commentPosted: {
       subscribe: withFilter( 
         () => pubSub.asyncIterator([COMMENT_POSTED]),
-        (payload, variables) => payload.commentPosted.id === variables.chatId
+        (payload, variables) => {
+          const chatMatch = payload.commentPosted.chatId === variables.chatId;
+          return chatMatch;
+        }
       ),
     },
   },
